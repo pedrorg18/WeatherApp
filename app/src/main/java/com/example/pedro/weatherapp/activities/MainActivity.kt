@@ -5,7 +5,12 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.example.pedro.weatherapp.R
+import com.example.pedro.weatherapp.adapters.ForecastListAdapter
+import com.example.pedro.weatherapp.data.Request
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.uiThread
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,9 +30,15 @@ class MainActivity : AppCompatActivity() {
 
         val forecastList: RecyclerView = find(R.id.forecast_list)
         forecastList.layoutManager = LinearLayoutManager(this)
+        forecastList.adapter = ForecastListAdapter(items)
 
-        var any = Any()
+        val url = "http://api.openweathermap.org/data/2.5/forecast/daily?" +
+                "APPID=15646a06818f61f7b8d7823ca833e1ce&q=94043&mode=json&units=metric&cnt=7"
 
+        doAsync {
+            Request(url).run()
+            uiThread { longToast("Request performed") }
+        }
 
     }
 }
