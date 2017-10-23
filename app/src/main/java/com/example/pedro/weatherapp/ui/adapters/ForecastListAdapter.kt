@@ -6,18 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.pedro.weatherapp.R
 import com.example.pedro.weatherapp.domain.model.Forecast
 import com.example.pedro.weatherapp.domain.model.ForecastList
+import com.example.pedro.weatherapp.ui.utils.ctx
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_forecast.*
 import org.jetbrains.anko.find
 
-class ForecastListAdapter(private val weekForecast: ForecastList) :
+class ForecastListAdapter(private val weekForecast: ForecastList,
+                          private val itemClick: ForecastListAdapter.OnItemClickListener) :
         RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder? {
-        val view = LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(parent.ctx)
                 .inflate(R.layout.item_forecast, parent, false)
         return ViewHolder(view, itemClick)
     }
