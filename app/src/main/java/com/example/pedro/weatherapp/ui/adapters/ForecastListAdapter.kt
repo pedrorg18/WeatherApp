@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 import org.jetbrains.anko.find
 
 class ForecastListAdapter(private val weekForecast: ForecastList,
-                          private val itemClick: ForecastListAdapter.OnItemClickListener) :
+                          private val itemClick: (Forecast) -> Unit) :
         RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
 
 
@@ -30,7 +30,7 @@ class ForecastListAdapter(private val weekForecast: ForecastList,
 
     override fun getItemCount() = weekForecast.size
 
-    class ViewHolder(view: View, itemClick: OnItemClickListener) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, itemClick: (Forecast) -> Unit) : RecyclerView.ViewHolder(view) {
 
         private val iconView = view.find<ImageView>(R.id.icon)
         private val dateView = view.find<TextView>(R.id.date)
@@ -40,6 +40,7 @@ class ForecastListAdapter(private val weekForecast: ForecastList,
                 view.find<TextView>(R.id.maxTemperature)
         private val minTemperatureView =
                 view.find<TextView>(R.id.minTemperature)
+
 
         fun bindForecast(forecast: Forecast) {
 
@@ -52,14 +53,8 @@ class ForecastListAdapter(private val weekForecast: ForecastList,
 
             }
 
-
         }
 
-
-    }
-
-    interface OnItemClickListener {
-        operator fun invoke(forecast: Forecast)
     }
 
 }
