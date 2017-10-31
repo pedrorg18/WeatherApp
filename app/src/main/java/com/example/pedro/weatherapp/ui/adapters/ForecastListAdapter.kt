@@ -30,7 +30,8 @@ class ForecastListAdapter(private val weekForecast: ForecastList,
 
     override fun getItemCount() = weekForecast.size
 
-    class ViewHolder(view: View, itemClick: (Forecast) -> Unit) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, private val itemClick: (Forecast) -> Unit)
+        : RecyclerView.ViewHolder(view) {
 
         private val iconView = view.find<ImageView>(R.id.icon)
         private val dateView = view.find<TextView>(R.id.date)
@@ -50,7 +51,7 @@ class ForecastListAdapter(private val weekForecast: ForecastList,
                 descriptionView.text = description
                 maxTemperatureView.text = "$high"
                 minTemperatureView.text = "$low"
-
+                itemView.setOnClickListener { itemClick(this) }
             }
 
         }

@@ -11,7 +11,7 @@ typealias ModelForecast = com.example.pedro.weatherapp.domain.model.Forecast
 
 class ForecastDataMapper {
 
-    fun convertToDataModel(forecast : ForecastResult) : ForecastList =
+    fun convertToDataModel(forecast : ForecastResult) =
             ForecastList(forecast.city.name, forecast.city.country, convertForecastListToDomain(forecast.list))
 
     private fun convertForecastListToDomain(list: List<Forecast>): List<ModelForecast> {
