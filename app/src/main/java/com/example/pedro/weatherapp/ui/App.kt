@@ -1,12 +1,12 @@
 package com.example.pedro.weatherapp.ui
 
 import android.app.Application
+import com.example.pedro.weatherapp.ui.utils.DelegatesExt
 
 class App : Application() {
 
     companion object {
-        lateinit var instance : App
-        private set
+        var instance : App by DelegatesExt.notNullSingleValue()
     }
 
     override fun onCreate() {
