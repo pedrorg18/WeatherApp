@@ -6,7 +6,7 @@ import org.jetbrains.anko.db.select
 
 class ForecastDb(
     private var forecastDbHelper: ForecastDbHelper = ForecastDbHelper.instance,
-    private val dataMapper : DbDataMaper = DbDataMapper()) {
+    private val dataMapper : DbDataMapper = DbDataMapper()) {
 
     //function that requests a forecast based on a zip code and a date
     fun requestForecastByZipCode(zipCode: Long, date: Long) = forecastDbHelper.use {
@@ -20,6 +20,9 @@ class ForecastDb(
         val city = select(CityForecastTable.NAME)
                 .whereSimple("${CityForecastTable.ID} = ?", zipCode.toString())
                 .parseOpt{ CityForecast(HashMap(it), dailyForecast) }
+
+        //return
+        if (city != null) dataMapper.convertToDomain(city) else null
     }
 
     fun <T : Any> SelectQueryBuilder.parseList(
