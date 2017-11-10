@@ -1,5 +1,7 @@
 package com.example.pedro.weatherapp.data.db
 
+import android.database.sqlite.SQLiteDatabase
+import com.example.pedro.weatherapp.domain.model.ForecastList
 import org.jetbrains.anko.db.MapRowParser
 import org.jetbrains.anko.db.SelectQueryBuilder
 import org.jetbrains.anko.db.select
@@ -36,5 +38,20 @@ class ForecastDb(
             parseOpt(object : MapRowParser<T> {
                 override fun parseRow(columns: Map<String, Any?>): T = parser(columns)
             })
+
+    //We inline the result of use with '=' because it returns Unit. Then this method returns Unit as well
+    fun saveForecast(forecast: ForecastList) = forecastDbHelper.use {
+        clear(CityForecastTable.NAME)
+        clear(DayForecastTable.NAME)
+
+        with(dataMapper.convertFromDomain(forecast)) {
+
+        }
+    }
+
+    private fun SQLiteDatabase.clear(tableName: String) {
+        execSQL("delete from $tableName")
+    }
+
 
 }

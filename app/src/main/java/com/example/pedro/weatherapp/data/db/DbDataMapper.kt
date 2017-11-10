@@ -14,4 +14,14 @@ class DbDataMapper {
     private fun convertDayToDomain(dayForecast: DayForecast) = with(dayForecast) {
         Forecast(date, description, high, low, iconUrl)
     }
+
+    fun convertFromDomain(forecastList: ForecastList) = with(forecastList) {
+        val dailyForecasts = dailyForecast.map { convertDayFromDomain(id, it) }
+        CityForecast(id, city, country, dailyForecasts)
+    }
+
+    private fun convertDayFromDomain(cityId: Long, domainDayForecast: Forecast) =
+            with(domainDayForecast) {
+                DayForecast(date, description, high, low, iconUrl, cityId)
+            }
 }
