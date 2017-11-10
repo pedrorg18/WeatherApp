@@ -1,9 +1,11 @@
 package com.example.pedro.weatherapp.data.db
 
-import android.database.sqlite.SQLiteDatabase
 import com.example.pedro.weatherapp.domain.model.ForecastList
-import org.jetbrains.anko.db.MapRowParser
-import org.jetbrains.anko.db.SelectQueryBuilder
+import com.example.pedro.weatherapp.extensions.parseList
+import com.example.pedro.weatherapp.extensions.parseOpt
+import com.example.pedro.weatherapp.extensions.toVarargArray
+import com.example.pedro.weatherapp.extensions.clear
+import org.jetbrains.anko.db.insert
 import org.jetbrains.anko.db.select
 
 class ForecastDb(
@@ -27,31 +29,16 @@ class ForecastDb(
         if (city != null) dataMapper.convertToDomain(city) else null
     }
 
-    fun <T : Any> SelectQueryBuilder.parseList(
-            parser: (Map<String, Any?>) -> T): List<T> =
-            parseList(object : MapRowParser<T> {
-                override fun parseRow(columns: Map<String, Any?>): T = parser(columns)
-            })
-
-    fun <T : Any> SelectQueryBuilder.parseOpt(
-            parser: (Map<String, Any?>) -> T): T? =
-            parseOpt(object : MapRowParser<T> {
-                override fun parseRow(columns: Map<String, Any?>): T = parser(columns)
-            })
-
     //We inline the result of use with '=' because it returns Unit. Then this method returns Unit as well
     fun saveForecast(forecast: ForecastList) = forecastDbHelper.use {
         clear(CityForecastTable.NAME)
         clear(DayForecastTable.NAME)
 
         with(dataMapper.convertFromDomain(forecast)) {
-
+            insert(CityForecastTable.NAME, *map.toVarargArray())
+            dailyForecast.forEach { insert(DayForecastTable.NAME, *it.map.toVarargArray()) }
         }
     }
 
-    private fun SQLiteDatabase.clear(tableName: String) {
-        execSQL("delete from $tableName")
-    }
-
-
 }
+
