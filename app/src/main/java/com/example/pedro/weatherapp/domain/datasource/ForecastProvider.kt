@@ -22,6 +22,8 @@ class ForecastProvider (private  val sources: List<ForecastDataSource> =
         return if (res != null && res.size >= days) res else null
     }
 
+    private fun <T : Any> requestToSources(f: (ForecastDataSource) -> T?): T =
+            sources.firstResult { f(it) }
 
 
     private fun todayTimeSpan() = System.currentTimeMillis() /
