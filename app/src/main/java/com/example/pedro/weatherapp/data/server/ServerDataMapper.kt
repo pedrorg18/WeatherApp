@@ -1,17 +1,14 @@
-package com.example.pedro.weatherapp.domain.mappers
+package com.example.pedro.weatherapp.data.server
 
-import com.example.pedro.weatherapp.data.Forecast
-import com.example.pedro.weatherapp.data.ForecastResult
 import com.example.pedro.weatherapp.domain.model.ForecastList
-import java.text.DateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 typealias ModelForecast = com.example.pedro.weatherapp.domain.model.Forecast
 
-class ForecastDataMapper {
+class ServerDataMapper {
 
-    fun convertFromDataModel(zipCode: Long, forecast: ForecastResult) = with(forecast) {
+    fun convertToDomain(zipCode: Long, forecast: ForecastResult) = with(forecast) {
         ForecastList(zipCode, city.name, city.country, convertForecastListToDomain(list))
     }
 

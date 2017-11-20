@@ -1,5 +1,6 @@
 package com.example.pedro.weatherapp.data.db
 
+import com.example.pedro.weatherapp.domain.datasource.ForecastDataSource
 import com.example.pedro.weatherapp.domain.model.ForecastList
 import com.example.pedro.weatherapp.extensions.parseList
 import com.example.pedro.weatherapp.extensions.parseOpt
@@ -10,10 +11,11 @@ import org.jetbrains.anko.db.select
 
 class ForecastDb(
     private var forecastDbHelper: ForecastDbHelper = ForecastDbHelper.instance,
-    private val dataMapper : DbDataMapper = DbDataMapper()) {
+    private val dataMapper : DbDataMapper = DbDataMapper())
+    : ForecastDataSource{
 
     //function that requests a forecast based on a zip code and a date
-    fun requestForecastByZipCode(zipCode: Long, date: Long) = forecastDbHelper.use {
+    override fun requestForecastByZipCode(zipCode: Long, date: Long) = forecastDbHelper.use {
         val dailyRequest = "${DayForecastTable.CITY_ID} = ? " +
                 "AND ${DayForecastTable.DATE} >= ?"
 
