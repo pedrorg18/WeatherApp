@@ -2,12 +2,16 @@ package com.example.pedro.weatherapp.data.server
 
 import com.example.pedro.weatherapp.data.db.ForecastDb
 import com.example.pedro.weatherapp.domain.datasource.ForecastDataSource
+import com.example.pedro.weatherapp.domain.model.Forecast
 import com.example.pedro.weatherapp.domain.model.ForecastList
 
 class ForecastServer(
         private val dataMapper: ServerDataMapper = ServerDataMapper(),
         private  val forecastDb: ForecastDb = ForecastDb())
     : ForecastDataSource {
+    override fun requestDayForecast(id: Long): Forecast? =
+        throw UnsupportedOperationException()
+
 
     override fun requestForecastByZipCode(zipCode: Long, date: Long):
             ForecastList? {
