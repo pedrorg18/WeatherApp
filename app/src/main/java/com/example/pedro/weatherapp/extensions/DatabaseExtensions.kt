@@ -10,8 +10,12 @@ fun <T : Any> SelectQueryBuilder.parseList(
             override fun parseRow(columns: Map<String, Any?>): T = parser(columns)
         })
 
-fun <T : Any> SelectQueryBuilder.parseOpt(
-        parser: (Map<String, Any?>) -> T): T? =
+/**
+ * Gets Param Lambda IN(Map of <String, Any?>) OUT(T)
+ * Returns T?
+ *
+ */
+fun <T : Any> SelectQueryBuilder.parseOpt(parser: (Map<String, Any?>) -> T): T? =
         parseOpt(object : MapRowParser<T> {
             override fun parseRow(columns: Map<String, Any?>): T = parser(columns)
         })
@@ -19,3 +23,6 @@ fun <T : Any> SelectQueryBuilder.parseOpt(
 fun SQLiteDatabase.clear(tableName: String) {
     execSQL("delete from $tableName")
 }
+
+fun SelectQueryBuilder.byId(id: Long) =
+        whereSimple("_id = ?", id.toString())
