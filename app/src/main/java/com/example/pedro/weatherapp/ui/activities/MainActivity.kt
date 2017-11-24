@@ -8,7 +8,7 @@ import com.example.pedro.weatherapp.domain.command.RequestForecastCommand
 import com.example.pedro.weatherapp.ui.adapters.ForecastListAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.uiThread
 
 class MainActivity : AppCompatActivity() {
@@ -20,11 +20,14 @@ class MainActivity : AppCompatActivity() {
         forecastList.layoutManager = LinearLayoutManager(this)
 
         doAsync {
-            val forecastListResult = RequestForecastCommand(94043).execute()
+            val result = RequestForecastCommand(94043).execute()
             uiThread {
-                forecastList.adapter = ForecastListAdapter(forecastListResult) {
-                    toast(it.date.toString())
+                val adapter = ForecastListAdapter(result) {
+                    startActivity<DetailActivity>(DetailActivity.ID to it.id,
+                            DetailActivity.CITY_NAME to result.city)
                 }
+                forecastList.adapter = adapter
+                title = "${result.city} (${result.country})"
             }
         }
     }

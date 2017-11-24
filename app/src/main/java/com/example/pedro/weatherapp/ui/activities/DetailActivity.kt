@@ -1,11 +1,14 @@
-package com.example.pedro.weatherapp.domain.command
+package com.example.pedro.weatherapp.ui.activities
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import com.example.pedro.weatherapp.R
+import com.example.pedro.weatherapp.domain.command.RequestDayForecastCommand
 import com.example.pedro.weatherapp.domain.model.Forecast
+import com.example.pedro.weatherapp.extensions.color
 import com.example.pedro.weatherapp.extensions.toDateString
+import com.example.pedro.weatherapp.ui.utils.textColor
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_detail.*
 import org.jetbrains.anko.ctx
