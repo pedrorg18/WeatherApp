@@ -1,6 +1,5 @@
 package com.example.pedro.weatherapp.ui.activities
 
-import android.graphics.drawable.Drawable
 import android.support.v7.graphics.drawable.DrawerArrowDrawable
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -16,13 +15,15 @@ interface ToolbarManager {
     val toolbar: Toolbar
 
     var toolbarTitle: String
-    get() = toolbar.title.toString()
-    set(v) { toolbar.title = v }
+        get() = toolbar.title.toString()
+        set(v) {
+            toolbar.title = v
+        }
 
     fun initToolbar() {
         toolbar.inflateMenu(R.menu.menu_main)
         toolbar.setOnMenuItemClickListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.action_settings -> App.instance.toast("Setings")
                 else -> App.instance.toast("Unknown Option")
             }
@@ -32,13 +33,12 @@ interface ToolbarManager {
 
     fun enableHomeAsUp(up: () -> Unit) {
         toolbar.navigationIcon = createUpDrawable()
-        toolbar.setNavigationOnClickListener{up()}
+        toolbar.setNavigationOnClickListener { up() }
     }
 
     private fun createUpDrawable() =
-            with(DrawerArrowDrawable(toolbar.ctx)) {
+            DrawerArrowDrawable(toolbar.ctx).apply {
                 progress = 1f
-                this
             }
 
     fun attachToScroll(recyclerView: RecyclerView) {

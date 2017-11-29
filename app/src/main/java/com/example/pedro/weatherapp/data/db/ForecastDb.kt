@@ -17,7 +17,7 @@ class ForecastDb(
                 .byId(id)
                 .parseOpt { DayForecast(HashMap(it))}
 
-        if(forecast != null) dataMapper.convertDayToDomain(forecast) else null
+        forecast?.let { dataMapper.convertDayToDomain(it) }
     }
 
     //function that requests a forecast based on a zip code and a date
