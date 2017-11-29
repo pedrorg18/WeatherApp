@@ -1,9 +1,14 @@
 package com.example.pedro.weatherapp.ui.utils
 
+import android.content.Context
+import com.example.pedro.weatherapp.extensions.LongPreference
 import kotlin.reflect.KProperty
 
 object DelegatesExt {
     fun <T> notNullSingleValue() = NotNullSingleValueVar<T>()
+
+    fun longPreference(context: Context, name: String, default: Long) =
+            LongPreference(context, name, default)
 }
 
 class NotNullSingleValueVar<T> {
@@ -17,3 +22,4 @@ class NotNullSingleValueVar<T> {
         else throw IllegalStateException("${property.name} already initialized")
     }
 }
+
