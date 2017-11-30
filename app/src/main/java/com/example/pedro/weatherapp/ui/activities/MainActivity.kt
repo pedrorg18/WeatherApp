@@ -6,13 +6,15 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import com.example.pedro.weatherapp.R
 import com.example.pedro.weatherapp.domain.command.RequestForecastCommand
+import com.example.pedro.weatherapp.domain.model.ForecastList
 import com.example.pedro.weatherapp.ui.adapters.ForecastListAdapter
 import com.example.pedro.weatherapp.ui.utils.DelegatesExt
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.coroutines.experimental.bg
 import org.jetbrains.anko.find
 import org.jetbrains.anko.startActivity
-import org.jetbrains.anko.uiThread
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 
 class MainActivity : AppCompatActivity(), ToolbarManager {
 
@@ -35,15 +37,20 @@ class MainActivity : AppCompatActivity(), ToolbarManager {
         loadForecast()
     }
 
-    private fun loadForecast() = doAsync {
-        val result = RequestForecastCommand(zipCode).execute()
-        uiThread {
-            val adapter = ForecastListAdapter(result) {
-                startActivity<DetailActivity>(DetailActivity.ID to it.id,
-                        DetailActivity.CITY_NAME to result.city)
-            }
-            forecastList.adapter = adapter
-            toolbarTitle = "${result.city} (${result.country})"
+    private fun loadForecast() = async(UI) {
+        val asyncResult = bg {
+            RequestForecastCommand(zipCode).execute()
         }
+
+        updateUI(asyncResult.await())
+    }
+
+    private fun updateUI(weekForecast: ForecastList) {
+        val adapter = ForecastListAdapter(weekForecast) {
+            startActivity<DetailActivity>(DetailActivity.ID to it.id,
+                    DetailActivity.CITY_NAME to weekForecast.city)
+        }
+        forecastList.adapter = adapter
+        toolbarTitle = "${weekForecast.city} (${weekForecast.country})"
     }
 }
