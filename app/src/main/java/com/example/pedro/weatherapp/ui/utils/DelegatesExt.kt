@@ -1,14 +1,14 @@
 package com.example.pedro.weatherapp.ui.utils
 
 import android.content.Context
-import com.example.pedro.weatherapp.extensions.LongPreference
+import com.example.pedro.weatherapp.extensions.Preference
 import kotlin.reflect.KProperty
 
 object DelegatesExt {
     fun <T> notNullSingleValue() = NotNullSingleValueVar<T>()
 
-    fun longPreference(context: Context, name: String, default: Long) =
-            LongPreference(context, name, default)
+    fun <T> preference(context: Context, name: String, default: T) =
+            Preference(context, name, default)
 }
 
 class NotNullSingleValueVar<T> {
