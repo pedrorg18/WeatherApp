@@ -37,6 +37,7 @@ dependencies {
     compile "org.jetbrains.anko:anko-sqlite:$anko_version"
 //    compile "org.jetbrains.anko:anko-coroutines:$anko_version"
     testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:2.8.9"
 }
 repositories {
     mavenCentral()
