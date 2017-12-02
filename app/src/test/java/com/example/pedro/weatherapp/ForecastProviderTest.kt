@@ -1,5 +1,6 @@
 package com.example.pedro.weatherapp
 
+import com.example.pedro.weatherapp.domain.command.RequestDayForecastCommand
 import com.example.pedro.weatherapp.domain.datasource.ForecastDataSource
 import com.example.pedro.weatherapp.domain.datasource.ForecastProvider
 import com.example.pedro.weatherapp.domain.model.Forecast
@@ -8,6 +9,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 
 import org.mockito.Mockito.`when` as whenever
 
@@ -40,5 +42,13 @@ class ForecastProviderTest {
 
         Assert.assertNotNull(
                 ForecastProvider(listOf(db, server)).requestByZipCode(0, 0))
+    }
+
+    @Test
+    fun testProviderIsCalled() {
+        val forecastProvider = mock(ForecastProvider::class.java)
+        val command = RequestDayForecastCommand(2, forecastProvider)
+        command.execute()
+        verify(forecastProvider).requestForecast(2)
     }
 }
